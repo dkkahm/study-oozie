@@ -1,0 +1,47 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="fork-wf">
+	<parameters>
+		<property>
+			<name>jobTracker</name>
+		</property>
+		<property>
+			<name>nameNode</name>
+		</property>
+	</parameters>
+
+	<start to="fork-node" />
+
+	<fork name="fork-node">
+		<path start="echoA" />
+		<path start="echoB" />
+	</fork>
+
+	<action name="echoA">
+		<shell xmlns="uri:oozie:shell-action:0.2">
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<exec>/bin/python</exec>
+			<argument>echoA.py</argument>
+			<file>echoA.py#echoA.py</file>
+			<capture-output />
+		</shell>
+		<ok to="joinActions" />
+		<error to="joinActions" />
+	</action>
+
+	<action name="echoB">
+		<shell xmlns="uri:oozie:shell-action:0.2">
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<exec>/bin/python</exec>
+			<argument>echoB.py</argument>
+			<file>echoB.py#echoB.py</file>
+			<capture-output />
+		</shell>
+		<ok to="joinActions" />
+		<error to="joinActions" />
+	</action>
+
+	<join name="joinActions" to="done" />
+
+	<end name="done" />
+</workflow-app>

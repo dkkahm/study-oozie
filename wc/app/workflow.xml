@@ -1,0 +1,75 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="wordcount">
+
+  <parameters>
+    <property>
+      <name>jobTracker</name>
+    </property>
+    <property>
+      <name>nameNode</name>
+    </property>
+    <property>
+      <name>exampleDir</name>
+    </property>
+  </parameters>
+
+  <start to="intersection0"/>
+
+  <action name="intersection0">
+    <map-reduce>
+      <job-tracker>${jobTracker}</job-tracker>
+      <name-node>${nameNode}</name-node>
+
+      <prepare>
+         <delete path="${exampleDir}/data/output"/>
+      </prepare>
+
+      <configuration>
+        <property>
+          <name>mapred.mapper.new-api</name>
+          <value>true</value>
+        </property>
+        <property>
+          <name>mapred.reducer.new-api</name>
+          <value>true</value>
+        </property>
+        <property>
+          <name>mapreduce.map.class</name>
+          <value>MyMapper</value>
+        </property>
+        <property>
+          <name>mapreduce.reduce.class</name>
+          <value>MyReducer</value>
+        </property>
+        <property>
+          <name>mapred.output.key.class</name>
+          <value>org.apache.hadoop.io.Text</value>
+        </property>
+        <property>
+          <name>mapred.output.value.class</name>
+          <value>org.apache.hadoop.io.LongWritable</value>
+        </property>
+        <property>
+          <name>mapred.input.dir</name>
+          <value>${exampleDir}/data/input</value>
+        </property>
+        <property>
+          <name>mapred.output.dir</name>
+          <value>${exampleDir}/data/output</value>
+        </property>
+        <property>
+                <name>oozie.launcher.mapreduce.map.java.opts</name>
+                <value>-verbose</value>
+        </property>
+      </configuration>
+    </map-reduce>
+
+    <ok to="end"/>
+    <error to="fail"/>
+  </action>
+
+  <kill name="fail">
+    <message>Map/Reduce failed, error message</message>
+  </kill>
+  <end name="end"/>
+
+</workflow-app>

@@ -1,0 +1,43 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<coordinator-app name="my_first_coord_job"
+	start="2021-05-20T08:25+0900"
+	end="2021-05-20T08:35+0900"
+	frequency="5"
+	timezone="Asia/Seoul"
+	xmlns="uri:oozie:coordinator:0.4">
+	<action>
+		<workflow>
+			<app-path>${appBaseDir}/app/</app-path>
+			<configuration>
+				<property>
+					<name>nameNode</name>
+					<value>${nameNode}</value>
+				</property>
+				<property>
+					<name>jobTracker</name>
+					<value>${jobTracker}</value>
+				</property>
+				<property>
+					<name>exampleDir</name>
+					<value>${appBaseDir}</value>
+				</property>
+			</configuration>
+		</workflow>
+	</action>
+</coordinator-app>

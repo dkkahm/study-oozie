@@ -1,0 +1,37 @@
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="echo-wf">
+	<parameters>
+		<property>
+			<name>jobTracker</name>
+		</property>
+		<property>
+			<name>nameNode</name>
+		</property>
+	</parameters>
+
+	<start to="echo-node" />
+
+	<action name="echo-node">
+		<shell xmlns="uri:oozie:shell-action:0.2">
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<exec>/bin/python</exec>
+			<argument>script.py</argument>
+			<argument>${myInputDirs}</argument>
+			<argument>${myOutputDirs}</argument>
+			<argument>${myNominalTime}</argument>
+			<argument>${myActualTime}</argument>
+			<argument>${myPreviousInstance}</argument>
+			<argument>${myFutureInstance}</argument>
+			<file>script.py#script.py</file>
+			<capture-output />
+		</shell>
+		<ok to="success" />
+		<error to="fail" />
+	</action>
+
+	<kill name="fail">
+		<message>XXXXXXXXXXXX Failed</message>
+	</kill>
+
+	<end name="success" />
+</workflow-app>
